@@ -27,7 +27,7 @@ input,select,textarea,button{font-family:var(--fb)}
 .screen.active{display:flex;flex-direction:column}
 /* ONBOARDING */
 #screen-onboard{background:var(--bg);justify-content:center;align-items:stretch;padding:0}
-.ob-wrap{display:flex;flex-direction:column;min-height:100vh;padding:calc(var(--safe-top)+24px) 24px calc(var(--safe-bottom)+24px)}
+.ob-wrap{display:flex;flex-direction:column;min-height:100vh;padding:calc(var(--safe-top)+28px) 24px calc(var(--safe-bottom)+32px)}
 .ob-logo{font-family:var(--fd);font-size:56px;letter-spacing:.05em;color:var(--gold);line-height:1;margin-bottom:4px}
 .ob-tagline{font-size:11px;color:var(--text3);letter-spacing:.25em;text-transform:uppercase;margin-bottom:32px}
 .ob-step{display:none;flex:1;flex-direction:column}
@@ -50,7 +50,7 @@ input,select,textarea,button{font-family:var(--fb)}
 .ob-prog-dot{height:3px;flex:1;border-radius:2px;background:var(--border2);transition:background .3s}
 .ob-prog-dot.done{background:var(--gold)}
 /* HEADER */
-#app-header{background:var(--bg1);border-bottom:1px solid var(--border);padding:8px 16px 8px;flex-shrink:0}
+#app-header{background:var(--bg1);border-bottom:1px solid var(--border);padding:calc(var(--safe-top)+8px) 16px 8px;flex-shrink:0}
 .hdr-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .hdr-logo{font-family:var(--fd);font-size:24px;letter-spacing:.08em;color:var(--gold)}
 .hdr-meta{display:flex;align-items:center;gap:8px}
@@ -58,7 +58,7 @@ input,select,textarea,button{font-family:var(--fb)}
 .week-ctrl{display:flex;align-items:center;gap:5px}
 .btn-wk{background:var(--bg2);border:1px solid var(--border2);color:var(--text3);border-radius:3px;padding:3px 9px;font-family:var(--fm);font-size:13px;cursor:pointer}
 /* SESSION BAR */
-#session-bar{background:#080c06;border-bottom:1px solid #141e0a;padding:5px 16px;display:none;justify-content:space-between;align-items:center;flex-shrink:0}
+#session-bar{background:#080c06;border-bottom:1px solid #141e0a;padding:5px 16px;display:none;justify-content:space-between;align-items:center;flex-shrink:0;flex-shrink:0}
 #session-bar.running{display:flex}
 .sess-time{font-family:var(--fm);font-size:14px;color:var(--green)}
 .sess-lbl{font-size:9px;color:#2a3a18;font-family:var(--fd);letter-spacing:.15em;text-transform:uppercase}
@@ -69,15 +69,16 @@ input,select,textarea,button{font-family:var(--fb)}
 .coach-text{font-size:12px;color:#5a7848;line-height:1.55;padding-right:28px}
 .coach-dismiss{position:absolute;top:10px;right:14px;background:transparent;border:none;color:var(--text3);font-size:18px;cursor:pointer;line-height:1}
 /* TOP NAV */
-#bottom-nav{background:var(--bg1);border-bottom:1px solid var(--border);padding:0;display:flex;flex-shrink:0;position:sticky;top:0;z-index:200;order:-1}
+#bottom-nav{background:var(--bg1);border-bottom:1px solid var(--border);padding:0;display:flex;flex-shrink:0}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;background:transparent;border:none;cursor:pointer;border-bottom:2px solid transparent}
 .nav-icon{font-size:16px;line-height:1}
 .nav-label{font-family:var(--fd);font-size:8px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase}
 .nav-btn.active .nav-label{color:var(--gold)}
 .nav-btn.active{border-bottom-color:var(--gold)}
 /* CONTENT */
-#app-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--safe-bottom)+16px)}
-#screen-app{padding-top:calc(var(--safe-top))}
+#screen-app{padding-top:0}
+#app-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.panel{padding:12px 14px calc(var(--safe-bottom)+80px)}
 .panel{display:none;padding:12px 14px 100px}
 .panel.active{display:block}
 /* TOAST */
@@ -178,7 +179,7 @@ input,select,textarea,button{font-family:var(--fb)}
 /* SWAP MODAL */
 #swap-modal{position:fixed;inset:0;background:#000000bb;z-index:300;display:none;align-items:flex-end}
 #swap-modal.open{display:flex}
-.swap-sheet{background:var(--bg1);border-radius:16px 16px 0 0;padding:20px 16px calc(var(--safe-bottom)+24px);width:100%;max-height:75vh;overflow-y:auto}
+.swap-sheet{background:var(--bg1);border-radius:16px 16px 0 0;padding:20px 16px calc(var(--safe-bottom)+32px);width:100%;max-height:78vh;overflow-y:auto}
 .swap-title{font-family:var(--fd);font-size:22px;letter-spacing:.04em;margin-bottom:4px}
 .swap-sub{font-size:11px;color:var(--text3);margin-bottom:14px}
 .swap-opt{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;gap:12px}
@@ -187,7 +188,7 @@ input,select,textarea,button{font-family:var(--fb)}
 .swap-opt-meta{font-size:10px;color:var(--text3);font-family:var(--fm);margin-top:1px}
 .btn-swap-close{width:100%;margin-top:14px;padding:12px;background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:6px;cursor:pointer;font-family:var(--fd);font-size:14px;letter-spacing:.08em}
 /* QUICK LOG */
-#ql-panel{position:fixed;inset:0;background:var(--bg);z-index:250;display:none;flex-direction:column;padding:calc(var(--safe-top)+20px) 16px calc(var(--safe-bottom)+24px);max-width:600px;margin:0 auto;overflow-y:auto}
+#ql-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:250;display:none;flex-direction:column;padding:calc(var(--safe-top)+24px) 16px calc(var(--safe-bottom)+28px);overflow-y:auto}
 #ql-panel.open{display:flex}
 .ql-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
 .ql-ex-name{font-family:var(--fd);font-size:28px;letter-spacing:.03em;line-height:1.1}
@@ -329,7 +330,7 @@ input,select,textarea,button{font-family:var(--fb)}
 /* ADD EXERCISE MODAL */
 #add-ex-modal{position:fixed;inset:0;background:#000000bb;z-index:400;display:none;align-items:flex-end}
 #add-ex-modal.open{display:flex}
-.add-ex-sheet{background:var(--bg1);border-radius:16px 16px 0 0;padding:20px 16px calc(var(--safe-bottom)+24px);width:100%;max-height:80vh;overflow-y:auto}
+.add-ex-sheet{background:var(--bg1);border-radius:16px 16px 0 0;padding:20px 16px calc(var(--safe-bottom)+32px);width:100%;max-height:80vh;overflow-y:auto}
 .add-ex-search{width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);border-radius:6px;padding:11px 14px;font-family:var(--fb);font-size:15px;outline:none;margin-bottom:10px}
 .add-ex-search:focus{border-color:color-mix(in srgb,var(--green) 55%,transparent)}
 .muscle-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
@@ -354,7 +355,7 @@ input,select,textarea,button{font-family:var(--fb)}
 /* SETTINGS EDITOR MODAL */
 #settings-editor-modal{position:fixed;inset:0;background:#000000bb;z-index:400;display:none;align-items:flex-end}
 #settings-editor-modal.open{display:flex}
-.settings-editor-sheet{background:var(--bg1);border-radius:16px 16px 0 0;padding:20px 16px calc(var(--safe-bottom)+24px);width:100%;max-height:80vh;overflow-y:auto}
+.settings-editor-sheet{background:var(--bg1);border-radius:16px 16px 0 0;padding:20px 16px calc(var(--safe-bottom)+32px);width:100%;max-height:80vh;overflow-y:auto}
 .settings-editor-title{font-family:var(--fd);font-size:20px;letter-spacing:.04em;margin-bottom:14px}
 
 
@@ -384,7 +385,7 @@ input,select,textarea,button{font-family:var(--fb)}
 /* ── POST-WORKOUT SUMMARY ── */
 #post-workout-modal{position:fixed;inset:0;background:#000000cc;z-index:700;display:none;align-items:flex-end}
 #post-workout-modal.open{display:flex}
-.post-workout-sheet{background:var(--bg1);border-radius:20px 20px 0 0;padding:24px 18px calc(var(--safe-bottom)+24px);width:100%;max-height:88vh;overflow-y:auto}
+.post-workout-sheet{background:var(--bg1);border-radius:20px 20px 0 0;padding:24px 18px calc(var(--safe-bottom)+32px);width:100%;max-height:88vh;overflow-y:auto}
 .pw-logo{font-family:var(--fd);font-size:11px;letter-spacing:.25em;color:var(--gold);margin-bottom:4px}
 .pw-title{font-family:var(--fd);font-size:32px;letter-spacing:.03em;margin-bottom:4px}
 .pw-date{font-family:var(--fm);font-size:11px;color:var(--text3);margin-bottom:20px}
@@ -406,7 +407,7 @@ input,select,textarea,button{font-family:var(--fb)}
 /* ── READINESS CHECK-IN ── */
 #readiness-modal{position:fixed;inset:0;background:#000000cc;z-index:700;display:none;align-items:flex-end}
 #readiness-modal.open{display:flex}
-.readiness-sheet{background:var(--bg1);border-radius:20px 20px 0 0;padding:24px 18px calc(var(--safe-bottom)+24px);width:100%}
+.readiness-sheet{background:var(--bg1);border-radius:20px 20px 0 0;padding:24px 18px calc(var(--safe-bottom)+32px);width:100%}
 .readiness-title{font-family:var(--fd);font-size:26px;letter-spacing:.03em;margin-bottom:4px}
 .readiness-sub{font-size:12px;color:var(--text3);margin-bottom:20px;line-height:1.5}
 .readiness-question{margin-bottom:16px}
@@ -795,6 +796,7 @@ input,select,textarea,button{font-family:var(--fb)}
         <div class="settings-row"><div><div class="settings-label">Export CSV</div></div><button class="btn-action blue" onclick="exportCSV()">CSV</button></div>
         <div class="settings-row"><div><div class="settings-label">Import backup</div></div><button class="btn-action green" onclick="document.getElementById('import-file').click()">Import</button></div>
         <div class="settings-row"><div><div class="settings-label">Reset all data</div></div><button class="btn-action red" onclick="resetAll()">Reset</button></div>
+        <div class="settings-row"><div><div class="settings-label">Last saved</div><div class="settings-sub" id="set-last-saved">—</div></div></div>
         <input type="file" id="import-file" accept=".json" onchange="importData(event)">
       </div>
       <div class="settings-sec">
@@ -1050,27 +1052,7 @@ let S = {
 // ═══════════════════════════════════════════
 // PERSISTENCE
 // ═══════════════════════════════════════════
-function saveAll(){
-  localStorage.setItem('forge-v1',JSON.stringify({
-    profile:S.profile,weekNum:S.weekNum,history:S.history,
-    bwHistory:S.bwHistory,foodLog:S.foodLog,activityLog:S.activityLog,
-    chatHistory:S.chatHistory,prefs:S.prefs,seenMilestones:[...S.seenMilestones],
-  }));
-}
-function loadAll(){
-  try{
-    const raw=localStorage.getItem('forge-v1');
-    if(!raw)return false;
-    const d=JSON.parse(raw);
-    S.profile=d.profile||null; S.weekNum=d.weekNum||1;
-    S.history=d.history||[]; S.bwHistory=d.bwHistory||[];
-    S.foodLog=d.foodLog||[]; S.activityLog=d.activityLog||[];
-    S.chatHistory=d.chatHistory||[];
-    S.prefs={...S.prefs,...(d.prefs||{})};
-    S.seenMilestones=new Set(d.seenMilestones||[]);
-    return !!S.profile;
-  }catch{return false;}
-}
+// saveAll and loadAll defined later
 function savePref(k,v){S.prefs[k]=v;saveAll();}
 
 // ═══════════════════════════════════════════
@@ -1397,9 +1379,31 @@ function obBack(){
   S.obStep--;document.getElementById(`ob-step-${S.obStep}`).classList.add('active');renderOBProgress();
 }
 function finishOnboarding(){
-  S.obData.apiKey=document.getElementById('ob-api-key').value.trim();
-  S.profile={...S.obData};S.prefs.apiKey=S.obData.apiKey;
-  saveAll();launchApp();
+  try{
+    S.obData.apiKey=(document.getElementById('ob-api-key')?.value||'').trim();
+    S.profile={...S.obData};
+    S.prefs.apiKey=S.obData.apiKey;
+    // Set default equipment if not set during onboarding
+    if(!S.profile.gym_equipment||!S.profile.gym_equipment.length){
+      S.profile.gym_equipment=['Barbells','Dumbbells','Cable machines','Hack squat','Pull-up bar','Bench','Landmine','Leg press'];
+    }
+    if(!S.profile.home_equipment||!S.profile.home_equipment.length){
+      S.profile.home_equipment=['Adjustable dumbbells','Adjustable bench','Resistance bands'];
+    }
+    saveAll();
+    // Use a direct call to avoid patch recursion issues
+    document.getElementById('screen-onboard').classList.remove('active');
+    document.getElementById('screen-app').classList.add('active');
+    updateHeader();renderDayTabs();renderExList();renderSettings();initChat();renderProgress();renderNutrition();
+    setTimeout(()=>{
+      if(!S.lastReadinessDate||S.lastReadinessDate!==new Date().toDateString()){
+        showReadinessCheckIn();
+      }
+    },700);
+  }catch(err){
+    console.error('Onboarding error:',err);
+    alert('Setup error: '+err.message+'. Please try again.');
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -1410,6 +1414,11 @@ function launchApp(){
   document.getElementById('screen-app').classList.add('active');
   updateHeader();renderDayTabs();renderExList();renderSettings();initChat();renderProgress();renderNutrition();
   if(S.prefs.proactiveCoach&&S.prefs.apiKey)setTimeout(showPreWorkoutCoach,900);
+  setTimeout(()=>{
+    if(!S.lastReadinessDate||S.lastReadinessDate!==new Date().toDateString()){
+      showReadinessCheckIn();
+    }
+  },600);
 }
 
 // ═══════════════════════════════════════════
@@ -2076,8 +2085,12 @@ function resetAll(){
 // INIT
 // ═══════════════════════════════════════════
 renderOBProgress();
-const hasData=loadAll();
-if(hasData&&S.profile){launchApp();}
+(function(){
+  const hasData=loadAll();
+  if(hasData&&S.profile){
+    launchApp();
+  }
+})();
 </script>
 
 <script>
@@ -3025,13 +3038,6 @@ function renderExList(){
   _origRenderExList();
   renderHomeWidgets();
   renderMuscleDiagram();
-  // Auto show readiness on first open of day if session hasn't started
-  if(!S.sessionStart&&!S.lastReadinessDate||S.lastReadinessDate!==new Date().toDateString()){
-    // Only show on workout panel
-    if(document.getElementById('panel-workout').classList.contains('active')){
-      setTimeout(showReadinessCheckIn,400);
-    }
-  }
 }
 
 // ════════════════════════════════════════════════════════
@@ -3095,36 +3101,62 @@ function buildCard(exId,accent,p){
 }
 
 // ════════════════════════════════════════════════════════
-// PATCH saveAll TO INCLUDE NEW STATE FIELDS
+// OVERRIDE saveAll WITH COMPLETE VERSION
 // ════════════════════════════════════════════════════════
-const _origSaveAll=saveAll;
 function saveAll(){
-  _origSaveAll();
-  // Extend with new fields
   try{
-    const existing=JSON.parse(localStorage.getItem('forge-v1')||'{}');
-    existing.measurements=S.measurements||[];
-    existing.workoutTemplates=S.workoutTemplates||[];
-    existing.lastReadinessDate=S.lastReadinessDate||null;
-    existing.readinessHistory=S.readinessHistory||[];
-    localStorage.setItem('forge-v1',JSON.stringify(existing));
-  }catch{}
+    const data={
+      profile:S.profile,weekNum:S.weekNum,
+      history:S.history,bwHistory:S.bwHistory,
+      foodLog:S.foodLog,activityLog:S.activityLog,
+      chatHistory:S.chatHistory,prefs:S.prefs,
+      seenMilestones:[...S.seenMilestones],
+      measurements:S.measurements||[],
+      workoutTemplates:S.workoutTemplates||[],
+      lastReadinessDate:S.lastReadinessDate||null,
+      readinessHistory:S.readinessHistory||[],
+      v:2,
+    };
+    const json=JSON.stringify(data);
+    localStorage.setItem('forge-v1',json);
+    localStorage.setItem('forge-v2',json); // backup key
+    localStorage.setItem('forge-lastSaved',new Date().toISOString());
+  }catch(e){console.error('saveAll error:',e);}
 }
 
 // ════════════════════════════════════════════════════════
-// PATCH loadAll TO INCLUDE NEW STATE FIELDS
+// OVERRIDE loadAll WITH COMPLETE VERSION + MULTI-KEY MIGRATION
 // ════════════════════════════════════════════════════════
-const _origLoadAll=loadAll;
 function loadAll(){
-  const result=_origLoadAll();
   try{
-    const d=JSON.parse(localStorage.getItem('forge-v1')||'{}');
-    S.measurements=d.measurements||[];
-    S.workoutTemplates=d.workoutTemplates||[];
-    S.lastReadinessDate=d.lastReadinessDate||null;
-    S.readinessHistory=d.readinessHistory||[];
-  }catch{}
-  return result;
+    // Try keys in order, pick the one with most history records
+    const keys=['forge-v1','forge-v2'];
+    let best=null,bestCount=0;
+    keys.forEach(k=>{
+      try{
+        const raw=localStorage.getItem(k);
+        if(!raw)return;
+        const d=JSON.parse(raw);
+        const count=(d.history||[]).length;
+        if(count>=bestCount){best=d;bestCount=count;}
+      }catch{}
+    });
+    if(!best)return false;
+    S.profile=best.profile||null;
+    S.weekNum=best.weekNum||1;
+    S.history=best.history||[];
+    S.bwHistory=best.bwHistory||[];
+    S.foodLog=best.foodLog||[];
+    S.activityLog=best.activityLog||[];
+    S.chatHistory=best.chatHistory||[];
+    S.prefs={...S.prefs,...(best.prefs||{})};
+    S.seenMilestones=new Set(best.seenMilestones||[]);
+    S.measurements=best.measurements||[];
+    S.workoutTemplates=best.workoutTemplates||[];
+    S.lastReadinessDate=best.lastReadinessDate||null;
+    S.readinessHistory=best.readinessHistory||[];
+    return !!S.profile;
+  }catch(e){console.error('loadAll error:',e);return false;}
 }
 
 // ════════════════════════════════════════════════════════
@@ -3136,18 +3168,7 @@ function renderProgress(){
   renderMeasurementHistory();
 }
 
-// ════════════════════════════════════════════════════════
-// PATCH launchApp TO SHOW READINESS ON FIRST OPEN
-// ════════════════════════════════════════════════════════
-const _origLaunchApp=launchApp;
-function launchApp(){
-  _origLaunchApp();
-  setTimeout(()=>{
-    if(!S.lastReadinessDate||S.lastReadinessDate!==new Date().toDateString()){
-      showReadinessCheckIn();
-    }
-  },600);
-}
+// launchApp readiness is now handled in finishOnboarding and init
 </script>
 
 </body>
