@@ -1002,7 +1002,7 @@ button { cursor: pointer; border: none; background: transparent; }
       <div id="home-widgets"></div>
       <div id="muscle-diagram-wrap"></div>
       <div class="wkt-header">
-        <div><div class="wkt-title" id="wkt-title">Day A</div><div class="wkt-meta" id="wkt-meta"></div></div>
+        <div><div class="wkt-title" id="wkt-title">Day A</div></div>
         <div style="display:flex;gap:6px;align-items:center">
           <button class="btn-action-sm" onclick="openTemplates()" title="Templates">Templates</button>
           <button class="btn-action-sm" onclick="openQL()">Quick Log</button>
@@ -1929,6 +1929,23 @@ function endSession() {
   const exIds=getExIds(S.activeDay);
   if(exIds.some(id=>S.cardState[id]?.savedIdx?.length>0)) showPostWorkoutSummary();
 }
+function checkWeekComplete() {
+  const prog=getProgram();
+  const doneThisWeek=new Set(
+    S.history.filter(h=>h.completed&&h.weekNum===S.weekNum)
+      .map(h=>prog.find(d=>d.exercises.includes(h.exerciseId))?.id)
+      .filter(Boolean)
+  );
+  if(doneThisWeek.size>=prog.length){
+    S.weekNum++;
+    S.cardState={};
+    saveAll();
+    updateHeader();
+    renderDayTabs();
+    renderExList();
+    showToast(`Week ${S.weekNum} — let's go`,'green');
+  }
+}
 
 // ── TOAST ─────────────────────────────────────────────────────────────
 let toastTO;
@@ -2490,7 +2507,10 @@ async function getPostWorkoutAI(sets,vol,dur,prs) {
     if(resp){document.getElementById('pw-coach').textContent=resp;document.getElementById('pw-coach-wrap').style.display='block';}
   }catch{}
 }
-function closePostWorkout() { document.getElementById('post-workout-modal').classList.remove('open'); }
+function closePostWorkout() {
+  document.getElementById('post-workout-modal').classList.remove('open');
+  checkWeekComplete();
+}
 function shareWorkoutCard() {
   const r=pwData;
   const text=`💪 ${getProgram().find(d=>d.id===S.activeDay)?.name||'Workout'} done!\n${r.totalSets} sets · ${Math.round(r.totalVol)}kg volume${r.dur?` · ${r.dur}min`:''}${r.prs?.length?`\n🏆 ${r.prs.length} PR${r.prs.length>1?'s':''}`:''}\nLogged with Forge`;
@@ -3026,7 +3046,7 @@ async function sendChat(){
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':S.prefs.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','x-api-key':getKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:600,system:buildCoachCtx(),messages:S.chatHistory.map(m=>({role:m.role,content:m.content}))})
     });
     if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error(err.error?.message||`API error ${resp.status}`);}
