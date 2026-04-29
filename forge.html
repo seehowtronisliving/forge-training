@@ -370,8 +370,8 @@
     <div id="setup-key-wrap">
       <div class="setup-key-lbl">Anthropic API key required to get started</div>
       <div class="setup-key-row">
-        <input class="setup-key-in" type="password" id="setup-key-input"
-          placeholder="sk-ant-..." autocorrect="off" autocapitalize="none" spellcheck="false">
+        <input class="setup-key-in" type="text" id="setup-key-input"
+          placeholder="sk-ant-..." autocorrect="off" autocapitalize="none" spellcheck="false" autocomplete="off" data-lpignore="true">
         <button class="btn-setup-key" onclick="saveSetupKey()">Save</button>
       </div>
     </div>
@@ -684,9 +684,14 @@ function load() {
 
 // ── API ──────────────────────────────────────────────────────────────
 function getKey() {
-  // Strip whitespace AND any non-printable/non-ASCII characters iOS may inject
-  return (S.prefs.apiKey || S.profile?.apiKey || '')
-    .replace(/[^\x21-\x7E]/g, '');  // keep only printable ASCII 33-126
+  const raw = S.prefs.apiKey || S.profile?.apiKey || '';
+  // Strip everything except printable ASCII 33-126 (! through ~)
+  // This catches: spaces, newlines, tabs, zero-width spaces, smart quotes,
+  // iOS formatting characters, Unicode invisible chars, BOM, etc.
+  return raw.split('').filter(c => {
+    const code = c.charCodeAt(0);
+    return code >= 33 && code <= 126;
+  }).join('');
 }
 
 async function ai(messages, system, maxTokens=600, model='claude-haiku-4-5-20251001') {
@@ -1827,8 +1832,8 @@ function renderCoach() {
     keyWrap.innerHTML = getKey() ? '' : `
       <div class="key-prompt">
         <p>Add your Anthropic API key to use the coach.</p>
-        <input class="key-input" id="inline-key" type="password" placeholder="sk-ant-..."
-          autocorrect="off" autocapitalize="none" spellcheck="false">
+        <input class="key-input" id="inline-key" type="text" placeholder="sk-ant-..."
+          autocorrect="off" autocapitalize="none" spellcheck="false" autocomplete="off" data-lpignore="true">
         <button class="btn-primary" onclick="saveInlineKey()">Save key</button>
       </div>`;
   }
@@ -2272,17 +2277,54 @@ function saveInjuries() {
 }
 
 function editAPIKey() {
-  const k = prompt('Anthropic API key (sk-ant-…). Leave blank to remove:', S.prefs.apiKey||'');
-  if (k === null) return;
-  const clean = (k||'').replace(/[^\x21-\x7E]/g,'');
-  if (clean && !clean.startsWith('sk-ant-')) {
-    alert(`Key format looks wrong: "${clean.slice(0,14)}..." — should start with sk-ant-`);
+  openModal('API Key', `
+    <div style="font-size:13px;color:var(--text3);margin-bottom:14px;line-height:1.6">
+      Paste your Anthropic API key below. It should start with <strong>sk-ant-</strong> and be around 108 characters.
+    </div>
+    <input class="edit-input" type="text" id="api-key-input"
+      placeholder="sk-ant-..."
+      autocorrect="off" autocapitalize="none" spellcheck="false"
+      autocomplete="off" data-lpignore="true"
+      value="${S.prefs.apiKey||''}"
+      oninput="
+        const v=this.value.split('').filter(c=>{const n=c.charCodeAt(0);return n>=33&&n<=126;}).join('');
+        const preview=document.getElementById('key-preview');
+        if(preview){
+          if(v.length>0){
+            preview.textContent=v.slice(0,12)+'...'+v.slice(-4)+' ('+v.length+' chars)';
+            preview.style.color=v.startsWith('sk-ant-')?'var(--ok)':'var(--err)';
+          } else {
+            preview.textContent='';
+          }
+        }
+      ">
+    <div id="key-preview" style="font-size:12px;font-weight:500;margin-top:6px;font-family:monospace;min-height:18px;color:var(--ok)">
+      ${S.prefs.apiKey ? S.prefs.apiKey.slice(0,12)+'...'+S.prefs.apiKey.slice(-4)+' ('+S.prefs.apiKey.length+' chars)' : ''}
+    </div>
+    <button class="btn-modal-save" onclick="saveAPIKey()" style="margin-top:16px">Save key</button>
+    ${S.prefs.apiKey ? '<button class="btn-modal-close" onclick="clearAPIKey()" style="margin-top:8px">Remove key</button>' : ''}
+  `);
+}
+
+function saveAPIKey() {
+  const raw = document.getElementById('api-key-input')?.value || '';
+  const clean = raw.split('').filter(c => { const n=c.charCodeAt(0); return n>=33&&n<=126; }).join('');
+  if (!clean) { toast('Enter your API key', 'err'); return; }
+  if (!clean.startsWith('sk-ant-')) {
+    toast('Key should start with sk-ant- (got: ' + clean.slice(0,12) + '...)', 'err');
     return;
   }
   S.prefs.apiKey = clean;
   if (S.profile) S.profile.apiKey = clean;
-  save(); renderSettings(); renderCoach();
-  toast(clean ? `Key saved (${clean.length} chars)` : 'Key removed');
+  save(); closeModal(); renderSettings(); renderCoach();
+  toast('Key saved — ' + clean.length + ' chars');
+}
+
+function clearAPIKey() {
+  S.prefs.apiKey = '';
+  if (S.profile) S.profile.apiKey = '';
+  save(); closeModal(); renderSettings(); renderCoach();
+  toast('Key removed');
 }
 
 function exportData() {
@@ -2428,8 +2470,8 @@ function addSetupMsg(role, content) {
 }
 
 function saveSetupKey() {
-  const raw = document.getElementById('setup-key-input')?.value || '';
-  const k = raw.replace(/[^\x21-\x7E]/g, '');  // strip ALL non-printable
+  const rawInput = document.getElementById('setup-key-input')?.value || '';
+  const k = rawInput.split('').filter(c => { const n=c.charCodeAt(0); return n>=33&&n<=126; }).join(''); // strip all non-printable
   if (!k) { toast('Enter your API key', 'err'); return; }
   if (!k.startsWith('sk-ant-')) {
     toast(`Key should start with sk-ant- (got: ${k.slice(0,10)})`, 'err');
