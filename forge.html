@@ -2052,6 +2052,71 @@ async function sendCoach() {
 }
 
 // ── SETTINGS PANEL ────────────────────────────────────────────────────
+
+function runKeyDiagnostic() {
+  const rawStored = S.prefs.apiKey || S.profile?.apiKey || '';
+  const filtered = getKey();
+
+  // Character analysis
+  const rawCodes = [...rawStored].map(c => c.charCodeAt(0));
+  const badChars = rawCodes.filter(n => n < 33 || n > 126);
+  const badPositions = rawCodes.map((n,i) => n < 33 || n > 126 ? i : -1).filter(i => i >= 0);
+
+  const info = [
+    `Stored length: ${rawStored.length}`,
+    `Filtered length: ${filtered.length}`,
+    `Non-printable chars: ${badChars.length}${badChars.length ? ' at positions '+badPositions.slice(0,5).join(',') : ''}`,
+    `Starts with sk-ant-: ${filtered.startsWith('sk-ant-')}`,
+    `First 14 chars: "${filtered.slice(0,14)}"`,
+    `Last 4 chars: "${filtered.slice(-4)}"`,
+  ].join('\n');
+
+  openModal('Key diagnostic', `
+    <div style="font-family:monospace;font-size:12px;background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);padding:14px;white-space:pre-wrap;word-break:break-all;margin-bottom:16px;line-height:1.8">${info}</div>
+    <div id="diag-result" style="font-size:13px;color:var(--text3);margin-bottom:14px">Tap Test to make a live API call…</div>
+    <button class="btn-modal-save" onclick="testKeyLive()">Test live API call</button>
+    <button class="btn-modal-close" style="margin-top:8px" onclick="closeModal()">Close</button>
+  `);
+}
+
+async function testKeyLive() {
+  const el = document.getElementById('diag-result');
+  if (el) { el.textContent = 'Calling API…'; el.style.color = 'var(--text3)'; }
+
+  const key = getKey();
+  if (!key) {
+    if (el) { el.textContent = 'No key stored.'; el.style.color = 'var(--err)'; }
+    return;
+  }
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: 'Hi' }],
+      }),
+    });
+
+    const data = await resp.json();
+    if (resp.ok) {
+      if (el) { el.textContent = '✓ Key valid — API call succeeded'; el.style.color = 'var(--ok)'; }
+    } else {
+      const msg = data?.error?.message || JSON.stringify(data);
+      if (el) { el.textContent = '✗ ' + resp.status + ': ' + msg; el.style.color = 'var(--err)'; }
+    }
+  } catch(e) {
+    if (el) { el.textContent = '✗ Network error: ' + e.message; el.style.color = 'var(--err)'; }
+  }
+}
+
 function renderSettings() {
   const el = document.getElementById('settings-content'); if (!el) return;
   const p = S.profile||{};
@@ -2084,6 +2149,7 @@ function renderSettings() {
     <div class="settings-sec">
       <div class="settings-sec-title">AI & Program</div>
       <div class="settings-row"><div><div class="settings-lbl">API key</div><div class="settings-sub">${getKey()?'Active':'Not set'}</div></div><button class="btn-edit" onclick="editAPIKey()">Edit</button></div>
+      <div class="settings-row"><div><div class="settings-lbl">Key diagnostic</div><div class="settings-sub">Test if your key is working</div></div><button class="btn-edit" onclick="runKeyDiagnostic()">Test</button></div>
       ${getKey()?`<div class="settings-row"><div><div class="settings-lbl">Regenerate program</div><div class="settings-sub">Rebuild from current profile via AI</div></div><button class="btn-edit" onclick="regenProgram()">Run</button></div>`:''}
       ${S.prefs.deload===false?'':`<div class="settings-row"><div><div class="settings-lbl">Deload this week</div><div class="settings-sub">Reduces load to 60% for recovery</div></div><button class="btn-edit" onclick="toggleDeload()">Toggle</button></div>`}
     </div>
